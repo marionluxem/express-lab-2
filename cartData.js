@@ -13,7 +13,7 @@ let cartData = [
     },
     {
     id:"2",
-    product: "Human Food",
+    product: "Bird Food",
     price: "$10.00",
     quantity: "2",
     },

@@ -67,8 +67,9 @@ cartItems.delete("/cart-items/:id", (req, res) => {
 
     // let product = cartData.product;
 
-    let sql = "DELETE FROM shoppingcart SET price=$1::real, product=$2::text, quantity=$3::int WHERE id=$4::int"
-    let values = [cartData.price, cartData.product, cartData.quantity, id];
+    let sql = "DELETE FROM shoppingcart WHERE id=$1::int"
+    // let sql = "DELETE FROM shoppingcart SET price=$1::real, product=$2::text, quantity=$3::int WHERE id=$4::int"
+    let values = [cartData.id];
     
     pool.query(sql, values)
         .then((result) => {
