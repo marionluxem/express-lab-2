@@ -1,0 +1,95 @@
+body {
+    padding-top: 80px;
+  }
+  
+  .show-cart li {
+    display: flex;
+  }
+  .card {
+    margin-bottom: 20px;
+  }
+  .card-img-top {
+    padding: 20px;
+    align-self: center;
+    width: 80% !important;
+  }
+  
+  .add-to-cart {
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .navbar {
+    background-color: rgb(7, 4, 39);
+    padding: 0 !important;
+    float: right !important;
+  
+  }
+  
+  .fixed-top {
+    float: right !important;
+  
+  }
+  
+  .btn {
+    margin: 10px 5px;
+  }
+  
+  .nav-btn {
+    background-color: white !important;
+    color: rgb(7, 4, 39) !important;
+    border-color: rgb(252, 252, 252) !important;
+  }
+  
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(7, 4, 39);
+    padding: 5px 10px;
+    width: 100%;
+    /* flex-direction: row-reverse; */
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    color: white;
+  }
+  
+  .logo {
+    font-weight: 900;
+    padding: 11px 0px;
+    font-size: 24px;
+  }
+  
+  .nav-items {
+    display: flex;
+    justify-content: flex-end;
+    align-content: space-around;
+    list-style-type: none;
+    letter-spacing: normal;
+  }
+  
+  .nav-item {
+    padding: 0px 20px;
+  }
+  
+  .nav-item > a {
+    text-decoration: none;
+    color: white;
+  
+  }
+  
+  .modal-total {
+    text-align: right;
+    padding: 10px;
+    font-weight: 900;
+  }
+  
+  .form-control {
+    border: 1px solid #fff !important;
+    text-align: center;
+  
+  }
