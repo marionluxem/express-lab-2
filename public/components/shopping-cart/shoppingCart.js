@@ -26,7 +26,7 @@ angular.module("CartApp")
            </div>
            <div class="modal-footer">
              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             <!-- <button type="button" class="btn btn-primary">Order now</button> -->
+             <button type="button" class="btn btn-primary" data-dismiss="modal">Order now</button>
              <button class="clear-cart btn btn-danger">Clear Cart</button>
            </div>
          </div>

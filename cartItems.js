@@ -1,11 +1,15 @@
 const express = require("express");
-// const cartData = require("./cartData");
+const cartData = require("./cartData");
 const cartItems = express.Router();
+
+cartItems.get('/', (req,res) => {
+    res.send(cartData);
+});
 
 const pg = require("pg");
 const pool = new pg.Pool({
     user: "postgres",
-    password: "",
+    password: "MA08rD07on",
     host: "localhost",
     port: 5432,
     database: "ExpressShopDB",

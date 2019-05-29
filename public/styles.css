@@ -1,5 +1,6 @@
 body {
     padding-top: 80px;
+    text-align: center;
   }
   
   .show-cart li {
@@ -7,7 +8,10 @@ body {
   }
   .card {
     margin-bottom: 20px;
+    flex-direction: row!important;
+    flex-wrap: wrap;
   }
+  
   .card-img-top {
     padding: 20px;
     align-self: center;
@@ -91,5 +95,10 @@ body {
   .form-control {
     border: 1px solid #fff !important;
     text-align: center;
-  
   }
+
+  @media (min-width: 768px) {
+    .container {
+        max-width: 720px!important;
+        width: 100%!important;
+    }

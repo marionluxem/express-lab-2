@@ -51,6 +51,25 @@ service.updateItem = (item, id) => {
     return response.data;
   });
 }
+
+
+// CONNECTS TO DATABASE
+
+service.getList = () => {
+  return $q(function(resolve, reject) {
+      $http.get('/cartItems')
+      .then( (response) => {
+          console.log(response.data)
+          resolve(response.data);
+      })
+      .catch( (err) => {
+          console.error(err);
+          reject(err);
+      })
+  })
+}
+
+
 }
 
 
