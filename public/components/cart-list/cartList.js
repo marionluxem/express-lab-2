@@ -1,17 +1,21 @@
 function ItemList (CartService) {
 
 const ctrl = this;
-
 ctrl.getList = () => {
   CartService.getCart()
     .then( (data) => {
         ctrl.cartItems = data;
+        console.log(ctrl.cartItems);
     })
     .catch( (err) => {
         console.log(err);
     })
 }
 ctrl.getList();
+
+ctrl.addItem = (item) => {
+  CartService.addItem(item);
+}
 
 // ************************************************
 // Shopping Cart API
@@ -24,10 +28,10 @@ let shoppingCart = (function() {
 cart = [];
 
 // Constructor
-function Item(product, price, count) {
+function Item(product, price, quantity) {
 this.product = product;
 this.price = price;
-this.count = count;
+this.quantity = quantity;
 }
 
 // Save cart
@@ -50,23 +54,23 @@ loadCart();
 let obj = {};
 
 // Add to cart
-obj.addItemToCart = function(product, price, count) {
+obj.addItemToCart = function(product, price, quantity) {
 for(let item in cart) {
   if(cart[item].product === product) {
-    cart[item].count ++;
+    cart[item].quantity ++;
     saveCart();
     return;
   }
 }
-let item = new Item(product, price, count);
+let item = new Item(product, price, quantity);
 cart.push(item);
 saveCart();
 }
-// Set count from item
-obj.setCountForItem = function(product, count) {
+// Set quantity from item
+obj.setquantityForItem = function(product, quantity) {
 for(let i in cart) {
   if (cart[i].product === product) {
-    cart[i].count = count;
+    cart[i].quantity = quantity;
     break;
   }
 }
@@ -75,8 +79,8 @@ for(let i in cart) {
 obj.removeItemFromCart = function(product) {
   for(let item in cart) {
     if(cart[item].product === product) {
-      cart[item].count --;
-      if(cart[item].count === 0) {
+      cart[item].quantity --;
+      if(cart[item].quantity === 0) {
         cart.splice(item, 1);
       }
       break;
@@ -102,20 +106,20 @@ cart = [];
 saveCart();
 }
 
-// Count cart 
-obj.totalCount = function() {
-let totalCount = 0;
+// quantity cart 
+obj.totalquantity = function() {
+let totalquantity = 0;
 for(let item in cart) {
-  totalCount += cart[item].count;
+  totalquantity += cart[item].quantity;
 }
-return totalCount;
+return totalquantity;
 }
 
 // Total cart
 obj.totalCart = function() {
 let totalCart = 0;
 for(let item in cart) {
-  totalCart += cart[item].price * cart[item].count;
+  totalCart += cart[item].price * cart[item].quantity;
 }
 return Number(totalCart.toFixed(2));
 }
@@ -130,7 +134,7 @@ for(i in cart) {
     itemCopy[p] = item[p];
 
   }
-  itemCopy.total = Number(item.price * item.count).toFixed(2);
+  itemCopy.total = Number(item.price * item.quantity).toFixed(2);
   cartCopy.push(itemCopy)
 }
 return cartCopy;
@@ -142,7 +146,7 @@ return cartCopy;
 // removeItemFromCart : Function
 // removeItemFromCartAll : Function
 // clearCart : Function
-// countCart : Function
+// quantityCart : Function
 // totalCart : Function
 // listCart : Function
 // saveCart : Function
@@ -178,7 +182,7 @@ output += "<tr>"
   + "<td>" + cartArray[i].product + "</td>" 
   + "<td>(" + cartArray[i].price + ")</td>"
   + "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-product=" + cartArray[i].product + ">-</button>"
-  + "<input type='number' class='item-count form-control' data-product='" + cartArray[i].product + "' value='" + cartArray[i].count + "'>"
+  + "<input type='number' class='item-quantity form-control' data-product='" + cartArray[i].product + "' value='" + cartArray[i].quantity + "'>"
   + "<button class='plus-item btn btn-primary input-group-addon' data-product=" + cartArray[i].product + ">+</button></div></td>"
   + "<td><button class='delete-item btn btn-danger' data-product=" + cartArray[i].product + ">X</button></td>"
   + " = " 
@@ -187,7 +191,7 @@ output += "<tr>"
 }
 $('.show-cart').html(output);
 $('.total-cart').html(shoppingCart.totalCart());
-$('.total-count').html(shoppingCart.totalCount());
+$('.total-quantity').html(shoppingCart.totalquantity());
 }
 
 // Delete item button
@@ -212,11 +216,11 @@ shoppingCart.addItemToCart(product);
 displayCart();
 })
 
-// Item count input
-$('.show-cart').on("change", ".item-count", function(event) {
+// Item quantity input
+$('.show-cart').on("change", ".item-quantity", function(event) {
 let product = $(this).data('product');
-let count = Number($(this).val());
-shoppingCart.setCountForItem(product, count);
+let quantity = Number($(this).val());
+shoppingCart.setquantityForItem(product, quantity);
 displayCart();
 });
 
@@ -231,68 +235,23 @@ template: `
 
 
 <!-- Main -->
-<div class="container">
-    <div class="row text-center">
-    <div class="col">
-    <div class="card" style="width: 20rem;">
-<img class="card-img-top" src="imgs/catfood.jpg" alt="Cat Food">
-<div class="card-block">
-<h4 class="card-title">Cat Food</h4>
-<p class="card-text">Price: $5.00</p>
-<a href="#" data-product="Cat-Food" data-price="5.00" class="add-to-cart btn btn-primary">Add to cart</a>
-</div>
-</div>
+<form>
+  Product:<br>
+  <input type="text" name="product" ng-model="item.product"><br>
+  Price:<br>
+  <input type="text" name="price" ng-model="item.price"><br>
+  Quantity:<br>
+  <input type="text" name="quantity" ng-model="item.quantity"><br>
+  <button ng-submit="$ctrl.addItem(item)">Add to Shopping Cart</button><br>
+</form>
+
+<div ng-repeat = "cart in $ctrl.cartItems" class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{cart.product}}</h5>
+    <p class="card-text"><small class="text-muted">Price: $\{{cart.price}}</small></p>
+    <p>Quantity: {{cart.quantity}}</p><button>Edit quantity</button>
+    <a href="#" data-product="{{cart.product}}" data-price="{{cart.price}}" class="add-to-cart btn btn-primary" ng-click="">Remove from cart</a>
   </div>
-  <div class="col">
-    <div class="card" style="width: 20rem;">
-<img class="card-img-top" src="imgs/dogfood.jpg" alt="Dog Food">
-<div class="card-block">
-<h4 class="card-title">Dog Food</h4>
-<p class="card-text">Price: $5.00</p>
-<a href="#" data-product="Dog-Food" data-price="5.00" class="add-to-cart btn btn-primary">Add to cart</a>
-</div>
-</div>
-  </div>
-  <div class="col">
-  <div class="card" style="width: 20rem;">
-<img class="card-img-top" src="imgs/birdfood.jpg" alt="Bird Food">
-<div class="card-block">
-<h4 class="card-title">Bird Food</h4>
-<p class="card-text">Price: $10.00</p>
-<a href="#" data-product="Bird-Food" data-price="10.00" class="add-to-cart btn btn-primary">Add to cart</a>
-</div>
-</div>
-</div>
-<div class="col">
-<div class="card" style="width: 20rem;">
-<img class="card-img-top" src="imgs/fishfood.jpg" alt="Card image cap">
-<div class="card-block">
-<h4 class="card-title">Fish Food</h4>
-<p class="card-text">Price: $1.00</p>
-<a href="#" data-product="Fish-Food" data-price="1.00" class="add-to-cart btn btn-primary">Add to cart</a>
-</div>
-</div>
-</div>
-<div class="col">
-<div class="card" style="width: 20rem;">
-<img class="card-img-top" src="imgs/turtlefood.jpg" alt="Card image cap">
-<div class="card-block">
-<h4 class="card-title">Turtle Food</h4>
-<p class="card-text">Price: $4.00</p>
-<a href="#" data-product="Turtle-Food" data-price="4.00" class="add-to-cart btn btn-primary">Add to cart</a>
-</div>
-</div>
-</div>
-     <!-- ng-repeat is preventing the item from being added to cart -->
-    <!-- <div class="card-deck text-center" id="container">
-      <div ng-repeat="item in $ctrl.cartData" class="card">
-        <img class="card-img-top" src="catfood.jpg" alt="{{item.product}}">
-        <div class="card-body">
-          <h5 class="card-title">{{item.product}}</h5>
-          <p class="card-text"><small class="text-muted">Price: {{item.price}}</small></p>
-          <a href="#" data-product="Lemon" data-price="5" class="add-to-cart btn btn-primary">Add to cart</a>
-          </div> -->
-    </div>
 </div>
 
 `
